@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+   <title>Document</title>
+</head>
+<body>
+   <form style="margin:20px;">
+
+      <!-- Markup example 1: input is inside label -->
+      <label for="이름">
+         First name
+         <input type="text" id="pname" name="pname" placeholder="이름" required>
+      </label>
+    
+      <!-- Markup example 2: input is after label -->
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="Email address" required>
+      <small>We'll never share your email with anyone else.</small>
+    
+      <!-- Button -->
+      <button type="submit" onclick="setUser()">Submit</button>
+    
+    </form>
+
+    <script>
+      async function setUser() {
+          let pname = document.getElementById("pname").value;
+          let email = document.getElementById("email").value;
+          let data = {
+                  'pname'   : pname,
+                  'email'   : email
+          }
+
+          await fetch('http://localhost:4000/database', {
+              method : 'POST',     // *GET, POST, PUT, DELETE 등
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              redirect: 'follow',  // manual, *follow, error
+              body: JSON.stringify(data)
+          })
+          .then((response) => response.json())
+          .then((data) => {
+              console.log('성공',data);
+          })
+          .catch((error) => {
+              console.error('실패',error);
+          })
+          //return response.json(); // JSON 응답을 네이티브 JavaScript 객체로 파싱
+      }
+  </script>
+</body>
+</html>
